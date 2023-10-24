@@ -12,6 +12,6 @@ Probability distribution function
 
 $$ p(\{s_i\}) = \frac{1}{Z} \mathrm{e}^{-H(\{s_i\})}. $$
 
-Let's investigate the expectation value of magnetic momentum $$ M(\{s_i\}) = \frac{1}{N}\sum_i s_i $$
+Let's investigate the expectation value of magnetic momentum $ M(\{s_i\}) = \frac{1}{N}\sum_i s_i $
 
 $$ \left< M \right> = \frac{1}{NZ} \sum_{\{s_i\}} M(\{s_i\}) \mathrm{e}^{-H(\{s_i\})}. $$
