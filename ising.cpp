@@ -5,9 +5,11 @@
 #include <random>
 
 #define N 100
+#define L 1000
 
-double J=1.0, B=0.0, T=10, Z;
-double res[101];
+double J=1.0, B=0.0, T=1000, Z;
+double* res = new double [L+1];
+double M;
 
 std::mt19937 ran((int)time(0));
 std::uniform_real_distribution<double> distr(0,1);
@@ -73,7 +75,7 @@ int main() {
 
 	Generate(s);
 
-	for(int t=0;t<=100;t++) {
+	for(int t=1;t<=L;t++) {
 		bool** x = new bool* [N+1];
 		for(int i=1;i<=N;i++) {
 			x[i] = new bool [N+1];
@@ -88,8 +90,11 @@ int main() {
 	}
 
 	freopen("ising.txt", "w", stdout);
-	for(int t=0;t<=100;t++)
+	for(int t=1;t<=L;t++) {
 		printf("%7.4f\n", res[t]);
+		M += res[t];
+	}
+	printf("            M = %f\n", M / L);
 
 	return 0;
 }
