@@ -5,13 +5,13 @@
 #include <ctime>
 
 #define N 100
-#define L 10000000
+#define L 100000000
 
 double T = 100;
 double J = 1.0, B = 0.0;
 double* dH = new double [L+1];
 double* mm = new double [L+1];
-bool map[31][51];
+bool map[31][101];
 
 std::mt19937 ran((int)time(0));
 std::uniform_real_distribution<double> distr(0,1);
@@ -62,7 +62,7 @@ int main() {
                 printf("%7.4f       %f\n", mm[t], dH[t]); */
         }
         printf("%4.0f            %f\n", T, M);
-        T += 100;
+        T += 50;
         map[int(M*30)][a++] = true;
     }
     /* printf("\n\n\n");
@@ -78,7 +78,7 @@ int main() {
     } */
 
     for(int i=30;i>=0;i--) {
-        for(int j=1;j<=50;j++) {
+        for(int j=1;j<=100;j++) {
             if(map[i][j])
                 printf("-");
             else
