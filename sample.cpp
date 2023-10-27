@@ -5,13 +5,13 @@
 #include <ctime>
 
 #define N 100
-#define L 100000000
+#define L 10000000
 
-double T = 100;
+double T = 50;
 double J = 1.0, B = 0.0;
 double* dH = new double [L+1];
 double* mm = new double [L+1];
-bool map[31][101];
+bool map[31][201];
 
 std::mt19937 ran((int)time(0));
 std::uniform_real_distribution<double> distr(0,1);
