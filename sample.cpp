@@ -27,7 +27,7 @@ int Select() {
 int main() {
     freopen("sample.txt","w",stdout);
 
-    int a=1;
+    int a = 1;
     while(T <= 4000) {
         int** s = new int* [N+1];
     	for(int i=1;i<=N;i++) {
