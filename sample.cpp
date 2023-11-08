@@ -7,7 +7,7 @@
 #define N 100
 #define L 10000000
 
-double T = 50;
+double T = 0.1;
 double J = 1.0, B = 0.0;
 double* dH = new double [L+1];
 double* mm = new double [L+1];
@@ -24,11 +24,15 @@ int Select() {
     return 1 + ran() % N;	    // Random integer from 1 to N
 }
 
+double Abs(double x) {
+	return (x >= 0) ? x : -x;
+}
+
 int main() {
     freopen("sample.txt","w",stdout);
 
     int a = 1;
-    while(T <= 4000) {
+    while(T <= 8.0) {
         int** s = new int* [N+1];
     	for(int i=1;i<=N;i++) {
 	    	s[i] = new int [N+1];
@@ -47,7 +51,8 @@ int main() {
             dH[t] += 2.0 * J * s[i][j] * ((j > 1) ? s[i][j-1] : s[i][j+N-1]);
             dH[t] += 2.0 * J * s[i][j] * ((i < N) ? s[i+1][j] : s[i-N+1][j]);
             dH[t] += 2.0 * J * s[i][j] * ((j < N) ? s[i][j+1] : s[i][j-N+1]);       // Periodic boundary conditions
-            if(Random() <= exp(-dH[t] / T)) {
+            // if(Random() <= exp(-dH[t] / T)) {
+            if(Random() <= exp(-(dH[t]-dH[t-1]) / T)) {
                 s[i][j] *= -1;
                 mm[t] += 2.0 * s[i][j] / N / N;
             } else {
@@ -57,12 +62,13 @@ int main() {
 
         double M = 0.0;
         for(int t=1;t<=L;t++) {
-            M += abs(mm[t]) / L;
-            /* if(t % (L/20) == 0)
-                printf("%7.4f       %f\n", mm[t], dH[t]); */
+            M += Abs(mm[t]);
+            // if(t % (L/20) == 0)
+            //     printf("%7.4f    %7.4f       %f\n", M, mm[t], dH[t]);
         }
-        printf("%4.0f            %f\n", T, M);
-        T += 50;
+		M /= double(L);
+        printf("%4.1f            %f\n", T, M);
+        T += 0.1;
         map[int(M*30)][a++] = true;
     }
     /* printf("\n\n\n");
@@ -89,3 +95,4 @@ int main() {
     
     return 0;
 }
+
