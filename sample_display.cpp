@@ -38,7 +38,7 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);
     glutInitWindowPosition(400, 250);
     glutInitWindowSize(800, 400);
-    glutCreateWindow("Ising N=100*100");
+    glutCreateWindow("Ising Monte Carlo");
     glutDisplayFunc(&myDisplay);
     glutMainLoop();
 
