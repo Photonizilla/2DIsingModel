@@ -4,10 +4,13 @@
 #include <random>
 #include <ctime>
 
-// #define L 100000
-int N, L;
+#define N 100
+#define L 10000000
+
 double T = 0.1;
 double J = 1.0, B = 0.0;
+double* dH = new double [L+1];
+double* mm = new double [L+1];
 bool map[31][201];
 
 std::mt19937 ran((int)time(0));
@@ -25,52 +28,19 @@ double Abs(double x) {
 	return (x >= 0) ? x : -x;
 }
 
-int Pow(int a, int b) {
-	int ans = 1;
-	for(int i=1;i<=b;i++)
-		ans *= a;
-	return ans;
-}
-
-int main(int argc, char** argv) {
-
-	if(argc == 1) {
-		printf("N is not given! Use the following form:\n./sample <N> <order_of_L>\n");
-		return 0;
-	}
-
-	if(argc == 2) {
-		printf("Order of L is not given! Use the following form:\n./sample <N> <order_of_L>\n");
-		return 0;
-	}
-
-	for(int i=0;argv[1][i] != '\0';i++) {
-		N *= 10;
-		N += argv[1][i] - '0';
-	}
-
-	for(int i=0;argv[2][i] != '\0';i++) {
-		L *= 10;
-		L += argv[2][i] - '0';
-	}
-	L = Pow(10, L);
-	double* dH = new double [L+1];
-	double* mm = new double [L+1];
-
-	freopen("sample.txt","w",stdout);
+int main() {
+    freopen("sample.txt","w",stdout);
 
     int a = 1;
-	int** s = new int* [N+1];
-    for(int i=1;i<=N;i++) {
-	    s[i] = new int [N+1];
-    }
     while(T <= 8.0) {
+        int** s = new int* [N+1];
     	for(int i=1;i<=N;i++) {
+	    	s[i] = new int [N+1];
             for(int j=1;j<=N;j++) {
                 s[i][j] = -1;       // Ground State
             }
     	}
-		
+
         mm[0] = -1;
         for(int t=1;t<=L;t++) {
             int i = Select();
