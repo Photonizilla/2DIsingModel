@@ -7,7 +7,7 @@
 #define N 4
 #define L 1000
 
-double J=1.0, B=0.0, T=0.2, Z;
+double J=1.0, B=0.0, T=0.1, Z;
 double* res = new double [L+1];
 double M;
 bool map[31][201];
@@ -95,11 +95,11 @@ int main() {
 	freopen("ising.txt", "w", stdout);
 
 	int a = 1;
-	while(T <= 20) {
+	while(T <= 8.0) {
 		Z = Partition(s, 1, 1, true) + Partition(s, 1, 1, false);
 		M = Expectation(s, 1, 1, true) + Expectation(s, 1, 1, false);
-        printf("%4.0f            Z = %f            <m> = %f\n", T, Z, M);
-		T += 0.2;
+        printf("%4.2f <m> = %f\n", T, M);
+		T += 0.1;
         map[int(M*30)][a++] = true;
 	}
 
