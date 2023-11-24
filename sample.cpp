@@ -8,6 +8,8 @@
 int N, L;
 double T = 0.1;
 double J = 1.0, B = 0.0;
+double dH;
+double M[201];
 bool map[31][201];
 
 std::mt19937 ran((int)time(0));
@@ -23,13 +25,6 @@ int Select() {
 
 double Abs(double x) {
 	return (x >= 0) ? x : -x;
-}
-
-int Pow(int a, int b) {
-	int ans = 1;
-	for(int i=1;i<=b;i++)
-		ans *= a;
-	return ans;
 }
 
 int main(int argc, char** argv) {
@@ -48,18 +43,26 @@ int main(int argc, char** argv) {
 		N *= 10;
 		N += argv[1][i] - '0';
 	}
-
+	
+	int b = 0;
+	double l = 0;
 	for(int i=0;argv[2][i] != '\0';i++) {
-		L *= 10;
-		L += argv[2][i] - '0';
+		if(argv[2][i] == '.') {
+			b = 1;
+			continue;
+		}
+		l *= 10;
+		l += argv[2][i] - '0';
+		b *= 10;
 	}
-	L = Pow(10, L);
-	double* dH = new double [L+1];
+	if(b == 0)
+		b = 1;
+	L = int(pow(10.0, l / double(b)));
 	double* mm = new double [L+1];
 
 	freopen("sample.txt","w",stdout);
 
-    int a = 1;
+    int a = 0;
 	int** s = new int* [N+1];
     for(int i=1;i<=N;i++) {
 	    s[i] = new int [N+1];
@@ -75,31 +78,30 @@ int main(int argc, char** argv) {
         for(int t=1;t<=L;t++) {
             int i = Select();
             int j = Select();
-            dH[t] = dH[t-1];        // dH denotes the energy changes from the ground state to the current state.
+            dH = 0;        // dH denotes the energy changes from the last to current state.
             mm[t] = mm[t-1];        // m denotes the magnetic moment of each state.
-            dH[t] += 2.0 * J * s[i][j] * ((i > 1) ? s[i-1][j] : s[i+N-1][j]);
-            dH[t] += 2.0 * J * s[i][j] * ((j > 1) ? s[i][j-1] : s[i][j+N-1]);
-            dH[t] += 2.0 * J * s[i][j] * ((i < N) ? s[i+1][j] : s[i-N+1][j]);
-            dH[t] += 2.0 * J * s[i][j] * ((j < N) ? s[i][j+1] : s[i][j-N+1]);       // Periodic boundary conditions
-            // if(Random() <= exp(-dH[t] / T)) {
-            if(Random() <= exp(-(dH[t]-dH[t-1]) / T)) {
+            dH += 2.0 * J * s[i][j] * ((i > 1) ? s[i-1][j] : s[i+N-1][j]);
+            dH += 2.0 * J * s[i][j] * ((j > 1) ? s[i][j-1] : s[i][j+N-1]);
+            dH += 2.0 * J * s[i][j] * ((i < N) ? s[i+1][j] : s[i-N+1][j]);
+            dH += 2.0 * J * s[i][j] * ((j < N) ? s[i][j+1] : s[i][j-N+1]);       // Periodic boundary conditions
+            if(Random() <= exp(-dH / T)) {
                 s[i][j] *= -1;
                 mm[t] += 2.0 * s[i][j] / N / N;
-            } else {
-                dH[t] = dH[t-1];
             }
         }
 
-        double M = 0.0;
+        M[++a] = 0.0;
         for(int t=1;t<=L;t++) {
-            M += Abs(mm[t]);
-            // if(t % (L/20) == 0)
-            //     printf("%7.4f    %7.4f       %f\n", M, mm[t], dH[t]);
+            M[a] += Abs(mm[t]);
         }
-		M /= double(L);
-        printf("%4.1f            %f\n", T, M);
+		M[a] /= double(L);
         T += 0.1;
-        map[int(M*30)][a++] = true;
+        map[int(M[a]*30)][a] = true;
+		if(a == 1) {
+			printf("%4.1f    %f    %f\n", T, M[a], 0.0);
+			continue;
+		}
+        printf("%4.1f    %f    %f\n", T, M[a], M[a-1] - M[a]);
     }
     /* printf("\n\n\n");
     for(int i=1;i<=N;i++) {

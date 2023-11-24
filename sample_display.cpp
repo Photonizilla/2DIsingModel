@@ -1,8 +1,9 @@
 #include <GL/glut.h>
 #include <cstdio>
+#include <cmath>
 
 #define n 80
-float T, m[102];
+float T, m[102], kai[102], mkai;
 
 void myDisplay() {
     glClear(GL_COLOR_BUFFER_BIT);
@@ -23,6 +24,12 @@ void myDisplay() {
 		glVertex2f(GLfloat(-0.9 + 1.8 * i / n), GLfloat(-0.9 + 1.8 * m[i]));
 	}
 	glEnd();
+	glColor3f(0.46f, 0.84f, 1.0f);
+	glBegin(GL_LINE_STRIP);
+	for(int i=1;i<=n;i++) {
+		glVertex2f(GLfloat(-0.9 + 1.8 * i / n), GLfloat(-0.9 + 1.8 * kai[i] / mkai));
+	}
+	glEnd();
     glFlush();
 }
 
@@ -31,7 +38,8 @@ int main(int argc, char** argv) {
 	freopen("sample.txt", "r", stdin);
 
 	for(int i=1;i<=n;i++) {
-		scanf("%f%f", &T, &m[i]);
+		scanf("%f%f%f", &T, &m[i], &kai[i]);
+		mkai = fmax(mkai, kai[i]);
 	}
 
     glutInit(&argc, argv);
